@@ -132,6 +132,8 @@ public class EpsilonNFA extends Automaton {
 		//add transitions to states
 		//System.out.println(transitionDFA);
 		for(State s: transitionDFA.keySet()){
+			if(s.getName().isEmpty())
+				continue;
 			for(String symbol: alphaDFA){
 				Set set = transitionDFA.get(s);
 				Set tmp = new Set();
