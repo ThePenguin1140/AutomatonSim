@@ -117,7 +117,7 @@ public class driver {
 				break;
 			}
 			clearConsole();
-			System.out.println(startMenu());
+			System.out.print(startMenu());
 			input = sc.nextInt();
 		}
 		sc.close();		
@@ -139,22 +139,22 @@ public class driver {
 				"5. Back\n"+alwaysMenu();
 		
 		System.out.println(menu);
-		Scanner sc = new Scanner(System.in);
-		int input = sc.nextInt();
+		Scanner nfaScan = new Scanner(System.in);
+		int input = nfaScan.nextInt();
 		String answer;;
 		while(input!=0 && input != 5){
 			switch(input){
 			case 1:
 				System.out.print("What state would you like to close?>");
-				input = sc.nextInt();
+				input = nfaScan.nextInt();
 				System.out.println();
 				Set eClose = (nfa.eClose(nfa.getState(String.valueOf(input))));
 				for(State s: eClose)
 					System.out.print(s.getName()+",");
 				System.out.println();
 				System.out.println("Would you like to close another state?>");
-				sc.nextLine();
-				answer = sc.nextLine();
+				nfaScan.nextLine();
+				answer = nfaScan.nextLine();
 				if(answer.toLowerCase().charAt(0)=='y'){
 					input = 1;
 					continue;
@@ -163,12 +163,12 @@ public class driver {
 					break;
 			case 2:
 				System.out.print("Please enter a word: ");
-				sc.nextLine();
-				String word = sc.nextLine();
+				nfaScan.nextLine();
+				String word = nfaScan.nextLine();
 				System.out.println();
 				System.out.println(nfa.containsWord(word));
 				System.out.println("Would you like to test another word?>");
-				answer = sc.nextLine();
+				answer = nfaScan.nextLine();
 				if(answer.toLowerCase().charAt(0)=='y'){
 					input = 1;
 					continue;
@@ -186,9 +186,10 @@ public class driver {
 				break;
 			}
 			System.out.println(menu);
-			input = sc.nextInt();
+			input = nfaScan.nextInt();
 		}
-		sc.close();
+		//can't close? makes sc in main throw an error
+		//nfaScan.close();
 	}
 	
 	private static void dfaMenu(DFA dfa){
@@ -197,19 +198,19 @@ public class driver {
 				"2. Print out Alphabet\n"+
 				"3. Back\n"+alwaysMenu();
 		System.out.println(menu);
-		Scanner sc = new Scanner(System.in);
-		int input = sc.nextInt();
+		Scanner dfaScan = new Scanner(System.in);
+		int input = dfaScan.nextInt();
 		String answer;;
 		while(input!=0 && input != 3){
 			switch(input){
 			case 1:
 				System.out.print("Please enter a word: ");
-				sc.nextLine();
-				String word = sc.nextLine();
+				dfaScan.nextLine();
+				String word = dfaScan.nextLine();
 				System.out.println();
 				System.out.println(dfa.containsWord(word));
 				System.out.println("Would you like to test another word?>");
-				answer = sc.nextLine();
+				answer = dfaScan.nextLine();
 				if(answer.toLowerCase().charAt(0)=='y'){
 					input = 1;
 					continue;
@@ -223,9 +224,9 @@ public class driver {
 				break;
 			}
 			System.out.println(menu);
-			input = sc.nextInt();
+			input = dfaScan.nextInt();
 		}
-		sc.close();
+		//dfaScan.close();
 	}
 	
 	private static String alwaysMenu(){
