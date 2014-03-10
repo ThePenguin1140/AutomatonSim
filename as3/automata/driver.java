@@ -9,13 +9,13 @@ import java.util.Scanner;
 public class driver {
 	public static void main(String[] agrs) {
 		Scanner sc = new Scanner(System.in);
-		System.out.print(startMenu());
-		int input = sc.nextInt();
 		File file = null;
 		String fileName, transition;
 		BufferedWriter writer;
-		// TODO make quit from submenu exit app
-		while(input!=0){
+		int input = 0;
+		do{
+			System.out.print(startMenu());
+			input = sc.nextInt();
 			switch(input){
 			case 1:
 				//enter nfa
@@ -118,9 +118,7 @@ public class driver {
 				break;
 			}
 			clearConsole();
-			System.out.print(startMenu());
-			input = sc.nextInt();
-		}
+		}while(input!=0);
 		sc.close();		
 	}
 
@@ -137,13 +135,14 @@ public class driver {
 				"2. Enter words\n"+
 				"3. Print out Alphabet\n"+
 				"4. Convert to DFA\n"+
-				"5. Back\n"+alwaysMenu();
+				"5. Print GRAIL format transitions\n"+
+				"6. Back\n"+alwaysMenu();
 		
 		System.out.println(menu);
 		Scanner nfaScan = new Scanner(System.in);
 		int input = nfaScan.nextInt();
 		String answer;;
-		while(input!=0 && input != 5){
+		while(input!=0 && input != 6){
 			switch(input){
 			case 1:
 				System.out.print("What state would you like to close?>");
@@ -183,6 +182,9 @@ public class driver {
 				DFA dfa = nfa.convertToDFA();
 				dfaMenu(dfa);
 				break;
+			case 5:
+				System.out.println(nfa.grailFormat());
+				break;
 			default:
 				break;
 			}
@@ -197,12 +199,13 @@ public class driver {
 		String menu =	dfa.toString()+"\n\n"+
 				"1. Enter Words\n"+
 				"2. Print out Alphabet\n"+
-				"3. Back\n"+alwaysMenu();
+				"3. Print GRAIL transition table"+
+				"4. Back\n"+alwaysMenu();
 		System.out.println(menu);
 		Scanner dfaScan = new Scanner(System.in);
 		int input = dfaScan.nextInt();
 		String answer;;
-		while(input!=0 && input != 3){
+		while(input!=0 && input != 4){
 			switch(input){
 			case 1:
 				System.out.print("Please enter a word: ");
@@ -220,6 +223,9 @@ public class driver {
 					break;
 			case 2:
 				System.out.println(dfa.alphabet);
+				break;
+			case 3:
+				System.out.println(dfa.grailFormat());
 				break;
 			default:
 				break;
