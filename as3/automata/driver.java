@@ -84,6 +84,7 @@ public class driver {
 									System.getProperty("file.separator")+fileName);
 					nfa = new EpsilonNFA(file);
 				} catch (Exception e) {
+					System.out.println(e.toString());
 					break;
 				}
 				System.out.println("nfa successfully scanned.");
@@ -105,6 +106,7 @@ public class driver {
 								System.getProperty("file.separator")+fileName);
 					dfa = new DFA(file);
 				} catch (Exception e) {
+					System.out.println(e.toString());
 					break;
 				}
 				System.out.println("nfa successfully scanned.");
