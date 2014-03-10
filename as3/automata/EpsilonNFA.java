@@ -94,7 +94,6 @@ public class EpsilonNFA extends Automaton {
 		return tmp;
 	}
 	
-	//TODO show subsets
 	public DFA convertToDFA(){
 		Map<State, Set> transitionDFA = new HashMap<State, Set>();
 		String name = getSubsetName(eClose(startStates));
