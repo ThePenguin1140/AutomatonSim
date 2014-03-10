@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeSet;
 
-public class EpsilonNFA extends DFA {
+public class EpsilonNFA extends Automaton {
 
 	public EpsilonNFA(File inputFile) throws Exception {
 		super(inputFile);
@@ -15,7 +15,6 @@ public class EpsilonNFA extends DFA {
 
 	@Override
 	public boolean containsWord(String word) {
-		// System.out.println(word);
 		Set tmpSet = new Set(startStates);
 		Iterator<State> iterator = tmpSet.iterator();
 		while (iterator.hasNext()) {
@@ -58,7 +57,6 @@ public class EpsilonNFA extends DFA {
 		Set closure = state.transition("?e");
 		if (closure != null) {
 			closure = eClose(state, closure);
-			// closure.remove(state);
 			return closure;
 		} else
 			return new Set();
@@ -95,10 +93,12 @@ public class EpsilonNFA extends DFA {
 		}
 		return tmp;
 	}
-
+	
+	//TODO show subsets
 	public DFA convertToDFA(){
 		Map<State, Set> transitionDFA = new HashMap<State, Set>();
-		State currentState = new State("0");
+		String name = getSubsetName(eClose(startStates));
+		State currentState = new State(name);
 		Set currentSet = new Set();
 		currentState.setStart(true);
 		transitionDFA.put(currentState, eClose(startStates));
@@ -107,14 +107,16 @@ public class EpsilonNFA extends DFA {
 		int index = 0;
 		//construct subsets for each state
 		do{
-			currentSet = transitionDFA.get(new State(String.valueOf(index)));
+			//currentSet = transitionDFA.get(new State(String.valueOf(index)));
+			currentSet = transitionDFA.get(new State(name));
 			for(String symbol: alphaDFA){
 				Set tmpSet = new Set();
 				for(State s: currentSet){
 					tmpSet.addAll(s.transition(symbol));
 				}
 				tmpSet = eClose(tmpSet);
-				State tmpState = new State(String.valueOf(transitionDFA.size()));
+				//State tmpState = new State(String.valueOf(transitionDFA.size()));
+				State tmpState = new State(getSubsetName(tmpSet));
 				for(State s: tmpSet){
 					if(s.isFinal())
 						tmpState.setFinal(true);
@@ -123,6 +125,7 @@ public class EpsilonNFA extends DFA {
 				}
 				if(!transitionDFA.containsValue(tmpSet))
 					transitionDFA.put(tmpState, tmpSet);
+				name = getSubsetName(tmpSet);
 			}
 			index++;
 		}while(transitionDFA.size()>index);
@@ -159,5 +162,12 @@ public class EpsilonNFA extends DFA {
 				finalStatesDFA.add(s);
 		}
 		return new DFA(statesDFA, startStatesDFA, finalStatesDFA, alphaDFA);
+	}
+	
+	private String getSubsetName(Set set){
+		String name = "";
+		for(State s: set)
+			name += s.getName()+",";
+		return name;
 	}
 }
