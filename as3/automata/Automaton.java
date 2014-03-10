@@ -170,7 +170,10 @@ public class Automaton {
 	}
 
 	public String grailFormat(){
-		String output = "Grail Transitions:";
+		String output = "Grail Transitions:\n";
+		for(State s: startStates){
+			output += "(START) |- "+s.getName()+"\n";
+		}
 		for(State s: states){
 			for(String symbol: alphabet){
 				output += s.getName() + " " + symbol + " ";
@@ -178,6 +181,9 @@ public class Automaton {
 					output += q.getName();
 				output += "\n";
 			}
+		}
+		for(State s: finalStates){
+			output += s.getName()+" -| (FINAL)"+"\n";
 		}
 		return output;
 	}
