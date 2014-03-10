@@ -14,6 +14,7 @@ public class driver {
 		File file = null;
 		String fileName, transition;
 		BufferedWriter writer;
+		// TODO make quit from submenu exit app
 		while(input!=0){
 			switch(input){
 			case 1:
