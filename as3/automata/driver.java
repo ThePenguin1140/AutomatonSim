@@ -137,12 +137,12 @@ public class driver {
 				"4. Convert to DFA\n"+
 				"5. Print GRAIL format transitions\n"+
 				"6. Back\n"+alwaysMenu();
-		
-		System.out.println(menu);
 		Scanner nfaScan = new Scanner(System.in);
-		int input = nfaScan.nextInt();
-		String answer;;
-		while(input!=0 && input != 6){
+		int input;
+		String answer;
+		do{
+			System.out.println(menu);
+			input = nfaScan.nextInt();
 			switch(input){
 			case 1:
 				System.out.print("What state would you like to close?>");
@@ -188,9 +188,7 @@ public class driver {
 			default:
 				break;
 			}
-			System.out.println(menu);
-			input = nfaScan.nextInt();
-		}
+		}while(input!=0 && input != 6);
 		//can't close? makes sc in main throw an error
 		//nfaScan.close();
 	}
@@ -201,11 +199,12 @@ public class driver {
 				"2. Print out Alphabet\n"+
 				"3. Print GRAIL transition table"+
 				"4. Back\n"+alwaysMenu();
-		System.out.println(menu);
 		Scanner dfaScan = new Scanner(System.in);
-		int input = dfaScan.nextInt();
-		String answer;;
-		while(input!=0 && input != 4){
+		int input;
+		String answer;
+		do{
+			System.out.println(menu);
+			input = dfaScan.nextInt();
 			switch(input){
 			case 1:
 				System.out.print("Please enter a word: ");
@@ -230,9 +229,7 @@ public class driver {
 			default:
 				break;
 			}
-			System.out.println(menu);
-			input = dfaScan.nextInt();
-		}
+		}while(input!=0 && input != 4);
 		//dfaScan.close();
 	}
 	
