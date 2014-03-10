@@ -168,6 +168,9 @@ public class EpsilonNFA extends Automaton {
 		String name = "";
 		for(State s: set)
 			name += s.getName()+",";
-		return name.substring(0, name.length()-1);
+		if(name.length()>1)
+			return name.substring(0, name.length()-1);
+		else
+			return name;
 	}
 }
