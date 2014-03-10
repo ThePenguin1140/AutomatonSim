@@ -90,7 +90,8 @@ public class driver {
 				}
 				System.out.println("nfa successfully scanned.");
 				clearConsole();
-				nfaMenu(nfa);
+				if(nfaMenu(nfa)==0)
+					input=0;
 				break;
 			case 4:
 				System.out.println("Please enter the file with the transitions\n"+
@@ -112,7 +113,8 @@ public class driver {
 				}
 				System.out.println("nfa successfully scanned.");
 				clearConsole();
-				dfaMenu(dfa);;
+				if(dfaMenu(dfa)==0)
+					input = 0;
 				break;
 			default:
 				break;
@@ -129,7 +131,7 @@ public class driver {
 				"4. Scan DFA from file\n"+alwaysMenu();
 	}
 	
-	private static void nfaMenu(EpsilonNFA nfa){
+	private static int nfaMenu(EpsilonNFA nfa){
 		String menu = 	nfa.toString()+"\n\n"+
 				"1. Compute the Epsilon Closure\n"+
 				"2. Enter words\n"+
@@ -180,7 +182,8 @@ public class driver {
 				break;
 			case 4:
 				DFA dfa = nfa.convertToDFA();
-				dfaMenu(dfa);
+				if(dfaMenu(dfa)==0)
+					input = 0;
 				break;
 			case 5:
 				System.out.println(nfa.grailFormat());
@@ -191,13 +194,14 @@ public class driver {
 		}while(input!=0 && input != 6);
 		//can't close? makes sc in main throw an error
 		//nfaScan.close();
+		return input;
 	}
 	
-	private static void dfaMenu(DFA dfa){
+	private static int dfaMenu(DFA dfa){
 		String menu =	dfa.toString()+"\n\n"+
 				"1. Enter Words\n"+
 				"2. Print out Alphabet\n"+
-				"3. Print GRAIL transition table"+
+				"3. Print GRAIL transition table\n"+
 				"4. Back\n"+alwaysMenu();
 		Scanner dfaScan = new Scanner(System.in);
 		int input;
@@ -231,6 +235,7 @@ public class driver {
 			}
 		}while(input!=0 && input != 4);
 		//dfaScan.close();
+		return input;
 	}
 	
 	private static String alwaysMenu(){
