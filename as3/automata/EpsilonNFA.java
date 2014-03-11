@@ -23,7 +23,7 @@ public class EpsilonNFA extends Automaton {
 		// System.out.println(tmpSet);
 		tmpSet = transitionFunction(word, tmpSet);
 		tmpSet.retainAll(finalStates);
-		if (tmpSet.size() > 0)
+		if (tmpSet.size()>1)
 			return true;
 		else
 			return false;
@@ -48,7 +48,8 @@ public class EpsilonNFA extends Automaton {
 			Iterator<State> it = tmpSet.iterator();
 			while (it.hasNext())
 				tmpSet.addAll(eClose(it.next()));
-			tmpSet = (transitionFunction(word.substring(1), tmpSet));
+			word = word.substring(1);
+			tmpSet = (transitionFunction(word, tmpSet));
 			return tmpSet;
 		}
 	}
@@ -106,8 +107,10 @@ public class EpsilonNFA extends Automaton {
 		int index = 0;
 		//construct subsets for each state
 		do{
+		//	name = getSubsetName(transitionDFA.get(new ArrayList<State>(transitionDFA.keySet()).get(index)));
 			//currentSet = transitionDFA.get(new State(String.valueOf(index)));
-			currentSet = transitionDFA.get(new State(name));
+			//currentSet = transitionDFA.get(new State(name));
+			currentSet = transitionDFA.get(new ArrayList<State>(transitionDFA.keySet()).get(index));
 			for(String symbol: alphaDFA){
 				Set tmpSet = new Set();
 				for(State s: currentSet){
@@ -124,7 +127,6 @@ public class EpsilonNFA extends Automaton {
 				}
 				if(!transitionDFA.containsValue(tmpSet))
 					transitionDFA.put(tmpState, tmpSet);
-				name = getSubsetName(tmpSet);
 			}
 			index++;
 		}while(transitionDFA.size()>index);
