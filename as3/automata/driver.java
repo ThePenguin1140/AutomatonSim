@@ -147,21 +147,7 @@ public class driver {
 			input = nfaScan.nextInt();
 			switch(input){
 			case 1:
-				System.out.print("What state would you like to close?>");
-				input = nfaScan.nextInt();
-				System.out.println();
-				Set eClose = (nfa.eClose(nfa.getState(String.valueOf(input))));
-				for(State s: eClose)
-					System.out.print(s.getName()+",");
-				System.out.println();
-				System.out.println("Would you like to close another state?>");
-				nfaScan.nextLine();
-				answer = nfaScan.nextLine();
-				if(answer.toLowerCase().charAt(0)=='y'){
-					input = 1;
-					continue;
-				}
-				else
+				System.out.println(nfa.eCloseAutomaton());
 					break;
 			case 2:
 				System.out.print("Please enter a word: ");

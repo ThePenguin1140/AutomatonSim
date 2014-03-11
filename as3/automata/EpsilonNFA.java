@@ -86,7 +86,7 @@ public class EpsilonNFA extends Automaton {
 			return closure;
 		}
 	}
-	
+
 	public TreeSet<Set>	eCloseAutomaton(){
 		TreeSet<Set> tmp = new TreeSet<Set>(treeComparator);
 		for(State s: states){
@@ -94,10 +94,11 @@ public class EpsilonNFA extends Automaton {
 		}
 		return tmp;
 	}
-	
+
 	public DFA convertToDFA(){
 		Map<State, Set> transitionDFA = new HashMap<State, Set>();
-		String name = getSubsetName(eClose(startStates));
+		//String name = getSubsetName(eClose(startStates));
+		String name = "0";
 		State currentState = new State(name);
 		Set currentSet = new Set();
 		currentState.setStart(true);
@@ -107,26 +108,30 @@ public class EpsilonNFA extends Automaton {
 		int index = 0;
 		//construct subsets for each state
 		do{
+			// get the next subset from the construction
 			currentSet = transitionDFA.get(new ArrayList<State>(transitionDFA.keySet()).get(index));
-			for(String symbol: alphaDFA){
+			// for letter in the alphabet
+			for(String letter: alphaDFA){
 				Set tmpSet = new Set();
-				for(State s: currentSet){
-					tmpSet.addAll(s.transition(symbol));
-				}
+				// explore the transition for every state in the subset 
+				// and collect the destination in tmpSet
+				for(State s: currentSet)
+					tmpSet.addAll(s.transition(letter));
 				// close the set
 				tmpSet = eClose(tmpSet);
-				State tmpState = new State(getSubsetName(tmpSet));
+				//State tmpState = new State(getSubsetName(tmpSet));
+				State tmpState = new State(String.valueOf(transitionDFA.size()));
 				// let the new state inherit the start and final 
 				// flags of it's parents
-				for(State s: tmpSet){
-					if(s.isFinal())
+				for(State q: tmpSet){
+					if(q.isFinal())
 						tmpState.setFinal(true);
-					if(s.isStart())
+					if(q.isStart())
 						tmpState.setFinal(true);
 				}
-				// if the constructed subset does not exist in the transition table 
-				// then add it
-				if(!transitionDFA.containsValue(tmpSet))
+				// if the constructed subset does not exist in the transition table
+				// and it is not an empty subset then add it to the table
+				if(!transitionDFA.containsValue(tmpSet) && !getSubsetName(tmpSet).isEmpty())
 					transitionDFA.put(tmpState, tmpSet);
 			}
 			// increment the index since another subset has now been explored
@@ -137,9 +142,6 @@ public class EpsilonNFA extends Automaton {
 		// for every state in the dfa
 		// add the transitions of it's parents to the state
 		for(State s: transitionDFA.keySet()){
-			// if the states name is empty then don't bother adding it
-			if(s.getName().isEmpty())
-				continue;
 			// for every symbol in the dfa's alphabet
 			for(String symbol: alphaDFA){
 				// get the parents
@@ -155,12 +157,20 @@ public class EpsilonNFA extends Automaton {
 				// WORK AROUND
 				// if the subset doesn't exist in the transition table
 				// (which it really shouldn't) then add it.
-				if(!transitionDFA.values().contains(tmp))
-					transitionDFA.put(s, tmp);
+				//	if(!transitionDFA.values().contains(tmp))
+				//	transitionDFA.put(s, tmp);
+				
+				// get the subsets from the table
 				ArrayList<Set> values = new ArrayList<Set>(transitionDFA.values());
+				// and find the index of the destination subset of the current transition
 				int location = values.indexOf(tmp);
+				if(location==-1)
+					continue;
+				// then get all the states from the table
 				ArrayList<State> keys = new ArrayList<State>(transitionDFA.keySet());
+				// and find the one that represents the subset
 				State destination = keys.get(location);
+				// then link the letter from the alphabet to the destination subset
 				s.setTransition(symbol, destination);
 			}
 			statesDFA.add(s);
@@ -180,7 +190,7 @@ public class EpsilonNFA extends Automaton {
 		}
 		return new DFA(statesDFA, startStatesDFA, finalStatesDFA, alphaDFA);
 	}
-	
+
 	private String getSubsetName(Set set){
 		String name = "";
 		for(State s: set)
