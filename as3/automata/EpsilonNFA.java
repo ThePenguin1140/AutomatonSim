@@ -107,42 +107,56 @@ public class EpsilonNFA extends Automaton {
 		int index = 0;
 		//construct subsets for each state
 		do{
-		//	name = getSubsetName(transitionDFA.get(new ArrayList<State>(transitionDFA.keySet()).get(index)));
-			//currentSet = transitionDFA.get(new State(String.valueOf(index)));
-			//currentSet = transitionDFA.get(new State(name));
 			currentSet = transitionDFA.get(new ArrayList<State>(transitionDFA.keySet()).get(index));
 			for(String symbol: alphaDFA){
 				Set tmpSet = new Set();
 				for(State s: currentSet){
 					tmpSet.addAll(s.transition(symbol));
 				}
+				// close the set
 				tmpSet = eClose(tmpSet);
-				//State tmpState = new State(String.valueOf(transitionDFA.size()));
 				State tmpState = new State(getSubsetName(tmpSet));
+				// let the new state inherit the start and final 
+				// flags of it's parents
 				for(State s: tmpSet){
 					if(s.isFinal())
 						tmpState.setFinal(true);
 					if(s.isStart())
 						tmpState.setFinal(true);
 				}
+				// if the constructed subset does not exist in the transition table 
+				// then add it
 				if(!transitionDFA.containsValue(tmpSet))
 					transitionDFA.put(tmpState, tmpSet);
 			}
+			// increment the index since another subset has now been explored
 			index++;
 		}while(transitionDFA.size()>index);
 		Set statesDFA = new Set();
 		//add transitions to states
-		//System.out.println(transitionDFA);
+		// for every state in the dfa
+		// add the transitions of it's parents to the state
 		for(State s: transitionDFA.keySet()){
+			// if the states name is empty then don't bother adding it
 			if(s.getName().isEmpty())
 				continue;
+			// for every symbol in the dfa's alphabet
 			for(String symbol: alphaDFA){
+				// get the parents
 				Set set = transitionDFA.get(s);
 				Set tmp = new Set();
+				// for every parent
 				for(State q: set){
+					// add the destination of the parent to a set
 					tmp.addAll(q.transition(symbol));
 				}
+				// close the set
 				tmp=eClose(tmp);
+				// WORK AROUND
+				// if the subset doesn't exist in the transition table
+				// (which it really shouldn't) then add it.
+				if(!transitionDFA.values().contains(tmp))
+					transitionDFA.put(s, tmp);
 				ArrayList<Set> values = new ArrayList<Set>(transitionDFA.values());
 				int location = values.indexOf(tmp);
 				ArrayList<State> keys = new ArrayList<State>(transitionDFA.keySet());
