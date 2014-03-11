@@ -169,14 +169,7 @@ public class driver {
 				String word = nfaScan.nextLine();
 				System.out.println();
 				System.out.println(nfa.containsWord(word));
-				System.out.println("Would you like to test another word?>");
-				answer = nfaScan.nextLine();
-				if(answer.toLowerCase().charAt(0)=='y'){
-					input = 1;
-					continue;
-				}
-				else
-					break;
+				break;
 			case 3:
 				System.out.println(nfa.alphabet);
 				break;
@@ -216,14 +209,7 @@ public class driver {
 				String word = dfaScan.nextLine();
 				System.out.println();
 				System.out.println(dfa.containsWord(word));
-				System.out.println("Would you like to test another word?>");
-				answer = dfaScan.nextLine();
-				if(answer.toLowerCase().charAt(0)=='y'){
-					input = 1;
-					continue;
-				}
-				else
-					break;
+				break;
 			case 2:
 				System.out.println(dfa.alphabet);
 				break;
